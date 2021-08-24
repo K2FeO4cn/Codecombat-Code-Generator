@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8 " />
+    <meta
+      name="viewport "
+      content="width =device-width, maximum-scale =1.0, minimum-scale =1.0, initial-scale =1.0 "
+    />
+    <link
+      href="https://fonts.lug.ustc.edu.cn/icon?family=Material+Icons "
+      rel="stylesheet "
+    />
+    <link
+      href="https://fonts.lug.ustc.edu.cn/css?family=Roboto "
+      rel="stylesheet "
+      type="text/css "
+    />
+    <script></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        background: #f6f6f6;
+        font-family: "Roboto", sans-serif;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 70px;
+        width: 100%;
+        background: #448aff;
+        box-shadow: 0 0 1px rgba(0, 0, 0, 0.14), 0 1px 4px rgba(0, 0, 0, 0.28);
+        z-index: 1;
+      }
+      header .menu-icon {
+        margin: 7.5px 15px;
+        font-size: 30px;
+        opacity: 0;
+        visibility: hidden;
+        color: #123113;
+      }
+
+      header h1 {
+        margin: 0;
+        color: #fefefe;
+        text-align: center;
+        text-shadow: 1px 1px 4px #454545;
+      }
+
+      header sub {
+        font-size: 15px;
+      }
+
+      header .primary-header-content,
+      .secondary-header-content {
+        display: flex;
+        align-items: center;
+        height: 18px;
+      }
+      nav {
+        flex: 1 1 auto;
+      }
+
+      nav ul {
+        display: flex;
+        justify-content: flex-end;
+        list-style: none;
+        font-size: 16px;
+        color: white;
+        cursor: pointer;
+      }
+
+      nav ul li {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        margin: 0 30px;
+        max-width: 80px;
+        text-shadow: 1px 1px 4px #454545;
+      }
+
+      nav ul li i {
+        font-size: 30px !important;
+      }
+      header .search-area {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        margin: 0 20px;
+        padding: 5px 0;
+        max-height: 35px;
+
+        box-shadow: 0 0 1px rgba(0, 0, 0, 0.14), 0 1px 4px rgba(0, 0, 0, 0.18);
+
+        border-radius: 1px;
+        background: white;
+        overflow: hidden;
+        transition: height 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55),
+          color 0.3s ease;
+      }
+
+      header .search-area .search {
+        border: none;
+        background: #f6f6f6;
+        padding: 0 10px;
+        height: 30px;
+        outline: none;
+        background: white;
+        width: 200px;
+      }
+
+      /*Search icon*/
+      header .search-area i {
+        font-size: 30px;
+        color: #123113;
+      }
+      /*Side-bar*/
+      .side-bar {
+        position: absolute;
+        top: 0;
+        left: -300px;
+        z-index: 2;
+
+        width: 250px;
+        height: 100%;
+        background: white;
+        box-shadow: 0 0 1px rgba(0, 0, 0, 0.24), 2px 0 20px rgba(0, 0, 0, 0.46);
+
+        transition: all 0.4s ease;
+      }
+
+      .side-bar-visible {
+        transform: translate 3d (300px, 0, 0);
+      }
+
+      .side-bar-primary-area {
+        height: 115px; /*115px;*/
+        background: #448aff;
+      }
+
+      .side-bar-nav {
+        /*we'll reuse some of the nav properties*/
+        flex-direction: column;
+      }
+
+      .side-bar-nav li {
+        /*we'll reuse some of the nav properties*/
+        flex-direction: row;
+        justify-content: space-between;
+        max-width: 100%;
+        margin: 0 15px;
+        color: #747474;
+        text-shadow: none;
+        height: 40px;
+        border-bottom: 1px solid #f6f6f6;
+      }
+      /*Material Icons*/
+      .material-icons {
+        font-family: "Material Icons";
+        font-weight: normal;
+        font-style: normal;
+        font-size: 24px; /* Preferred icon size */
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        line-height: 1;
+        text-transform: none;
+        letter-spacing: normal;
+        word-wrap: normal;
+        white-space: nowrap;
+        direction: ltr;
+
+        /* Support for all WebKit browsers. */
+        -webkit-font-smoothing: antialiased;
+        /* Support for Safari and Chrome. */
+        text-rendering: optimizeLegibility;
+
+        /* Support for Firefox. */
+        -moz-osx-font-smoothing: grayscale;
+
+        /* Support for IE. */
+        font-feature-settings: "liga";
+      }
+      /*Content area {Start}*/
+      div[role="main"] {
+        width: 70%;
+        flex: 1 1 auto;
+        background: white;
+        box-shadow: inset 0 0 1px #adadad;
+      }
+
+      .secondary-search-area {
+        background: #f6f6f6;
+        height: 45px;
+        visibility: hidden;
+        opacity: 0;
+      }
+      /*Content area {End}*/
+      /*Action buttons*/
+      .action-wrapper {
+        z-index: 2;
+      }
+
+      .action-wrapper :hover > .sub-button-wrapper {
+        visibility: visible;
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      .sub-button-wrapper {
+        position: absolute;
+        bottom: 60px;
+        right: 5%;
+
+        margin: 0 7.5px;
+        display: flex;
+        flex-direction: column;
+
+        transition: all 0.3s ease;
+        transform: scale(0.7);
+
+        visibility: hidden;
+        opacity: 0;
+      }
+
+      .primary-button {
+        position: absolute;
+        bottom: 10px;
+        right: 5%;
+
+        height: 50px;
+        width: 50px;
+        background: #d23f31
+          url(http://ssl.gstatic.com/bt/C3341AA7A1A076756462EE2E5CD71C11/1x/btw_ic_speeddial_white_24dp.png)
+          center center no-repeat;
+      }
+
+      .secondary-button {
+        height: 35px;
+        width: 35px;
+        background: #03a9f4; /*#00BCD4;#448AFF;#ffc107;*/
+        margin: 5px 0;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .action-button {
+        border-radius: 50%;
+        border: none;
+        outline: none;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.14), 0 4px 8px rgba(0, 0, 0, 0.28);
+      }
+
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        background: rgba(0, 0, 0, 0.68);
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        opacity: 0;
+        transition: visibility 0.1s linear;
+      }
+
+      .visible {
+        left: 0;
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="primary-header-content">
+        <h1>&nbsp;&nbsp;CodeCombat解析代码生成器<sub>HTML5版本 By K2FeO4</sub></h1>
+      </div>
+      <div class="secondary-header-content">
+        <nav>
+          <ul>
+            <li><i class="material-icons">code </i>代码</li>
+            <li><i class="material-icons">map </i>布局[WIP]</li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div role="main ">
+      <div class="action-wrapper">
+        <div id="content_code">
+          <h1>代码生成工具(Universal)</h1>
+          <div>
+            <p>您的操作指令于此:</p>
+            <textarea
+              rows="10"
+              cols="40"
+              placeholder="WASD控制移动,Z召唤弓箭手,X攻击最近的单位,C召唤剑士..."
+              id="sourcedata"
+            ></textarea>
+          </div>
+          <div>
+            <span>点击按钮编译Running Map</span>
+            <span>&nbsp;</span>
+            <input type="button" value="编译" onclick="make()" />
+            <script>
+              function make() {
+                console.log("开始编译...");
+                if (document.getElementById("make-compress").clicked) {
+                  const features_compress = true;
+                  console.log("压缩代码使能");
+                } else {
+                  console.log("代码压缩使能:否");
+                }
+                var make_data = [];
+                var make_source = document.getElementById("sourcedata").value;
+                console.log("输入:", make_source);
+                const key_table = {
+                  w: { d: 0, s: 1 },
+                  a: { d: 3, s: 1 },
+                  s: { d: 2, s: 1 },
+                  d: { d: 1, s: 1 },
+                  z: { s: "archer" },
+                  x: { a: "" },
+                  c: { s: "soldier" },
+                };
+                var making_key = make_source.split("");
+                console.log("分割后字符串", making_key);
+                for (var i = 0; i < making_key.length; i++) {
+                  make_data.push(key_table[making_key[i]]);
+                }
+                var compiled_data = JSON.stringify(make_data);
+                document.getElementById("blocked-data").innerHTML =
+                  compiled_data;
+                const templete_base = [
+                  "def run_program(Running_Map):",
+                  "    pc = 0",
+                  "    while True:",
+                  "        if hero.findNearestEnemy():",
+                  "            hero.attack(hero.findNearestEnemy())",
+                  "            hero.say('soldier')",
+                  "        else:",
+                  "            command = Running_Map[pc]",
+                  "            if 'd' in command:",
+                  "                if command['d'] == 0:",
+                  "                    hero.moveUp(command['s'])",
+                  "                if command['d'] == 1:",
+                  "                    hero.moveRight(command['s'])",
+                  "                if command['d'] == 2:",
+                  "                    hero.moveDown(command['s'])",
+                  "                if command['d'] == 3:",
+                  "                    hero.moveLeft(command['s'])",
+                  "            elif 'd' in command:",
+                  "                hero.say(command['s'])",
+                  "            elif 'd' in command:",
+                  "                if command['a'] == '':",
+                  "                    if hero.findNearestEnemy():",
+                  "                        hero.attack(hero.findNearestEnemy())",
+                  "                else:",
+                  "                    hero.attack(command['a'])",
+                  "            pc += 1",
+                ];
+                var temp_base = "run_program(" + compiled_data + ")";
+                var full_compile = "";
+                for (var i = 0; i < templete_base.length; i++) {
+                  full_compile = full_compile + templete_base[i] + "\n";
+                }
+                full_compile = full_compile + temp_base + "\n";
+                document.getElementById("blocked-data-code").innerHTML =
+                  full_compile;
+              }
+            </script>
+          </div>
+          <div>
+            <p>高级:编译选项</p>
+            <div class="make-files" style="margin: 5px">
+              <div>
+                <span>步数压缩使能 [WIP]:</span>
+                <input type="checkbox" id="make-compress" />
+              </div>
+            </div>
+          </div>
+          <div>
+            <textarea
+              readonly
+              rows="10"
+              cols="40"
+              id="blocked-data"
+              placeholder="这里是编译后的动作"
+            ></textarea>
+            <br />
+            <textarea
+              readonly
+              rows="10"
+              cols="40"
+              id="blocked-data-code"
+              placeholder="这里是编译后的直接替换式代码"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+      <!-- <button class="primary-button action-button"></button> -->
+    </div>
+
+    <div class="overlay"></div>
+  </body>
+  <!--- 不可见水印部分:版权所有:K2FeO4 (2021-2021) --->
+  <!--- Sign Part:CopyRight:K2FeO4 (2021-2021) --->
+</html>
